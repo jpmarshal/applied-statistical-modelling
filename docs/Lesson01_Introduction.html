@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lesson 1: introduction – Applied statistical modelling for the environmental sciences</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-2f02ddf7f6575c31a7e084de16de669d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Lesson01_Introduction.html">Lesson 1: introduction</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Applied statistical modelling for the environmental sciences</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson01_Introduction.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lesson 1: introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson02_LinearModels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 2: linear models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson03_TTest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 3: t-test</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson04_Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 4: regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson05_ANOVA1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 5: one-way ANOVA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson06_ANOVA2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 6: two-way ANOVA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson07_GeneralLinear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 7: general linear model</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson08_LinearMixed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 8: linear mixed-effects models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson09_GLM1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 9: introduction to generalised linear models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson10_GLM2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 10: GLM, overdispersion and offsets</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson11_PoissonANCOVA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 11: Poisson ANCOVA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson12_PoissonGLMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 12: Poisson mixed-effects models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson13_BinomialTtest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 13: binomial t-test</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson14_BinomialANCOVA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 14: binomial ANCOVA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson15_BinomialGLMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 15: binomial GLMM</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lesson 1: introduction</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Readings: Kéry (2010) chapters 1, 2, 5 (you might want to read chapters 3 and 4, but we won’t cover them directly)</p>
+<p>&nbsp;</p>
+<section id="some-introductory-theory" class="level2">
+<h2 class="anchored" data-anchor-id="some-introductory-theory">1.1 Some introductory theory</h2>
+<p>It is not our goal to delve deeply into the theory of Bayesian statistics or statistical computation. If you are interested in that, have a look at Royle and Dorazio (2008), King et al.&nbsp;(2009) or Link and Barker (2010). However, it is still useful to have a sense of how the nuts and bolt work in a Bayesian analysis, so here we go.</p>
+<ul>
+<li>We are interested in describing stochastic systems, that is, some degree of uncertainty about them.</li>
+<li>We use a statistical model as the basis of that description; a model is an abstract description of how we believe our observations are the result of observable and unobservable quantities (i.e.&nbsp;parameters).</li>
+<li>One of our goals is to use models containing parameters to obtain numerical estimates of those parameters.</li>
+<li>Another goal is to search for useful models that can help us gain insight about systems that would otherwise be too complex to understand or predict.</li>
+<li><strong>Probability</strong> and <strong>statistics</strong> are two avenues by which we learn about the characteristics of stochastic systems.
+<ul>
+<li>We use models and parameters to describe such systems and data to learn about their outcomes.</li>
+<li>Probability theory specifies parameters and a model, and examines a variable outcome (i.e.&nbsp;potential data).</li>
+<li>Statistics take data, assumes a model, and tries to infer system properties; i.e.&nbsp;making inferences via parameter estimates about a stochastic system by way of observed outcomes (i.e.&nbsp;collected data).</li>
+</ul></li>
+</ul>
+<p>&nbsp;</p>
+</section>
+<section id="classical-versus-bayesian" class="level2">
+<h2 class="anchored" data-anchor-id="classical-versus-bayesian">1.2 Classical versus Bayesian</h2>
+<p>Classical and Bayesian statistics are the two main views of how we should learn about parameter values in stochastic systems.</p>
+<ul>
+<li>Bayesian statistics has been around for a very long time, since 1763 and Thomas Bayes.</li>
+<li>Classical (conventional, frequentist) statistics began only in the early 20th century.</li>
+</ul>
+<p>For both paradigms: data are the observed realization of stochastic systems that contain at least one random process.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 37%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Paradigm</th>
+<th>Parameters</th>
+<th>Uncertainty</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Classical</td>
+<td>Assumed to be fixed, unknown constants</td>
+<td>Described in terms of hypothetical replicates</td>
+</tr>
+<tr class="even">
+<td>Bayesian</td>
+<td>Treated as realizations of random processes</td>
+<td>Described with a statistical distribution</td>
+</tr>
+</tbody>
+</table>
+<p>The hypothetical replicates thus give the label “frequentist” to the classical approach. The statistical distribution in the Bayesian approach is called the “posterior distribution”, which is the conditional probability distribution of all unknown quantities (e.g.&nbsp;parameters), given the data, the model, and what we knew about the quantities before conducting the analysis (i.e.&nbsp;prior information).</p>
+<p>Under Bayesian inference:</p>
+<ul>
+<li><span class="math inline">\(x\)</span> represents the observable quantities (data)</li>
+<li><span class="math inline">\(\theta\)</span> represents unobservable or partially observable quantities; these could be statistical parameters, missing data or predicted values.
+<ul>
+<li>All are treated as random variables.</li>
+<li>They can only be estimated probabilistically.</li>
+</ul></li>
+<li>We can make probabilistic statements about them; for example, if our parameter of interest is population growth rate, and 24% of the posterior distribution is negative, we can say, “the probability that the population is decreasing is 24%.”</li>
+<li>Because parameters are considered fixed in classical inference, such a statement makes no sense within that paradigm.</li>
+</ul>
+<p>For both paradigms, we can talk about the sampling distribution <span class="math inline">\(p(x|\theta)\)</span> of data <span class="math inline">\(x\)</span> as a function of a model with parameters <span class="math inline">\(\theta\)</span> (which can be a scalar or a vector).</p>
+<ul>
+<li>Under classical
+<ul>
+<li>The likelihood function <span class="math inline">\(p(x|\theta)\)</span> or <span class="math inline">\(L(x|\theta)\)</span> is the basis for inference.</li>
+<li>We use the function <span class="math inline">\(L(x|\theta)\)</span> to find the most likely value for <span class="math inline">\(\theta\)</span> based on the observed data.</li>
+<li>The values of <span class="math inline">\(\theta\)</span> are called the maximum likelihood estimates.</li>
+</ul></li>
+<li>Under Bayesian
+<ul>
+<li>Inference depends on Bayes Rule/Theorem, which is based on conditional probability.</li>
+<li>It describes the relationship between two conditional probabilities, <span class="math inline">\(p(A|B)\)</span> and <span class="math inline">\(p(B|A)\)</span>:</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[p(A|B) = \frac{p(B|A)p(A)}{p(B)}\]</span></p>
+<ul>
+<li>We can use this relationship to estimate the probability of parameters <span class="math inline">\(\theta\)</span> given data <span class="math inline">\(x\)</span> (i.e.&nbsp;the posterior distribution <span class="math inline">\(p(\theta|x)\)</span>):</li>
+</ul>
+<p><span class="math display">\[p(\theta|x) = \frac{p(x|\theta)p(\theta)}{p(x)}\]</span></p>
+<ul>
+<li>Thus, the posterior distribution <span class="math inline">\(p(\theta|x)\)</span> is proportional to <span class="math inline">\(p(x|\theta)\)</span> (the likelihood function) times the prior distribution of the parameters (<span class="math inline">\(p(\theta)\)</span>).</li>
+<li><span class="math inline">\(p(x)\)</span> is the normalizing constant, which makes <span class="math inline">\(p(\theta|x)\)</span> integrate to 1.</li>
+<li>However, because <span class="math inline">\(p(x)\)</span> does not involve unknown <span class="math inline">\(\theta\)</span>, we can treat it as a constant, and drop it from consideration. That leaves us with:</li>
+</ul>
+<p><span class="math display">\[p(\theta|x) \propto p(x|\theta)p(\theta)\]</span></p>
+<p>or, the posterior distribution in proportional to the likelihood times the prior distribution. This provides a rigorous mathematical statement about the probability parameter <span class="math inline">\(\theta\)</span>, given the data, via the posterior distribution <span class="math inline">\(p(\theta|x)\)</span>.</p>
+<p>Classical versus Bayesian:</p>
+<ul>
+<li>Classical methods estimate a single point for a parameter (the unknown constant).</li>
+<li>Bayesian methods make inferences about an entire statistical distribution, by treating parameters as random variables described by a statistical distribution.</li>
+</ul>
+<p>Criticisms about “subjective priors”</p>
+<ol type="1">
+<li>Objective science or statistics is an illusion anyway. We are always making decisions about what to study, what to measure and how to analyse.</li>
+<li>It is possible to use uninformative priors; however, one needs to be sure they are uninformative on, for example, the log or logit scale as well as the linear scale.</li>
+<li>Could be an advantage rather than a disadvantage; we are required to be explicit about the assumptions we make, and to test or examine their influence on the analysis.</li>
+</ol>
+<p>&nbsp;</p>
+</section>
+<section id="markov-chain-monte-carlo-mcmc-and-gibbs-sampling" class="level2">
+<h2 class="anchored" data-anchor-id="markov-chain-monte-carlo-mcmc-and-gibbs-sampling">1.3 Markov chain Monte Carlo (MCMC) and Gibbs sampling</h2>
+<p>MCMC is a set of tools to simulate draws from the posterior distribution <span class="math inline">\(p(\theta|x)\)</span> given a model, likelihood <span class="math inline">\(p(x|\theta)\)</span> and data. They use dependent sequences of random variables (i.e.&nbsp;samples from the posterior distribution of a parameter). Gibbs sampling is one such tool that is commonly used in Bayesian analysis.</p>
+<p>How it works:</p>
+<p><span class="math inline">\(x\)</span> is data, <span class="math inline">\(\theta\)</span> a vector of unknowns (parameters) and we are estimating <span class="math inline">\(k\)</span> of them;</p>
+<ol type="1">
+<li>Choose starting values</li>
+</ol>
+<p><span class="math display">\[\theta_1^{(0)}, \theta_2^{(0)}, ... \theta_k^{(0)}\]</span></p>
+<ol start="2" type="1">
+<li><ol type="a">
+<li>Sample <span class="math inline">\(\theta_1^{(1)}\)</span> from</li>
+</ol></li>
+</ol>
+<p><span class="math display">\[p(\theta_1|\theta_2^{(0)}, \theta_3^{(0)}, ..., \theta_k^{(0)}, x)\]</span></p>
+<ol start="2" type="1">
+<li><ol start="2" type="a">
+<li>Sample <span class="math inline">\(\theta_2^{(1)}\)</span> from</li>
+</ol></li>
+</ol>
+<p><span class="math display">\[p(\theta_2|\theta_1^{(1)}, \theta_3^{(0)}, ..., \theta_k^{(0)}, x)\]</span> …</p>
+<ol start="2" type="1">
+<li><ol start="11" type="a">
+<li>Sample <span class="math inline">\(\theta_k^{(1)}\)</span> from</li>
+</ol></li>
+</ol>
+<p><span class="math display">\[p(\theta_k|\theta_1^{(1)}, \theta_2^{(1)}, ..., \theta_{k-1}^{(1)}, x)\]</span></p>
+<ol start="3" type="1">
+<li>Repeat all of step 2 (these are “updates” or “iterations”) many, many times; this gives us a sample from <span class="math inline">\(p(\theta|x)\)</span>.</li>
+</ol>
+<ul>
+<li>After convergence, one draw (= sample) consists of <span class="math inline">\(k\)</span> values from the joint probability distribution of <span class="math inline">\(p(\theta|x)\)</span>.</li>
+<li>Conditional distributions in this step are called <strong>full conditionals</strong> (i.e.&nbsp;they condition on the other parameters).</li>
+<li>The sequence of random draws for each of <span class="math inline">\(k\)</span> parameters resulting from step 3 forms a Markov chain.</li>
+</ul>
+<p>To summarize the basics of a Bayesian analysis:</p>
+<ol type="1">
+<li>We use a degree-of-belief definition of probability rather than that based on frequency of hypothetical replicates.</li>
+<li>We use probability distributions to summarize our belief or knowledge about each model parameter and apply Bayes rule to update knowledge with observed data to get posterior distributions for every unknown in the model.</li>
+</ol>
+<ul>
+<li>Posterior distribution: quantifies all our knowledge about these unknowns given data, model and prior assumptions.</li>
+<li>Statistical inference is based on posterior distributions.</li>
+</ul>
+<ol start="3" type="1">
+<li>We use simulations (MCMC) to draw a series of dependent samples from from the posterior distribution, and base inference on that sample.</li>
+</ol>
+<p><strong>Example</strong> This code uses MCMC to estimate a standard normal distribution (from Link and Barker 2010)</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>nsamp <span class="ot">&lt;-</span> <span class="dv">100000</span> <span class="co"># number of iterations</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fl">3.7</span> <span class="co"># tuning parameter</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, nsamp) <span class="co"># empty vector to hold MCMC values</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>X[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># initial value</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>(nsamp<span class="sc">+</span><span class="dv">1</span>)){</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  u1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>) <span class="co"># uniform random number</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  u2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>) <span class="co"># uniform random number</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># new candidate X based on A, u1, current X</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  X.cand <span class="ot">&lt;-</span> X[i<span class="dv">-1</span>] <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>A<span class="sc">*</span>(u1 <span class="sc">-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># success parameter</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ratio of SN density at X(cand) to SN density at X(t-1)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>X.cand<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>X[i<span class="dv">-1</span>]<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if r is larger than u2 set X(t) = X(cand), otherwise X(t) = X(t-1)</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(u2 <span class="sc">&lt;</span> r, X[i] <span class="ot">&lt;-</span> X.cand, X[i] <span class="ot">&lt;-</span> X[i<span class="dv">-1</span>])</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot first 50 samples</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(X[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>], <span class="at">type =</span> <span class="st">'l'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In words, the algorithm generates a series of random values. This one uses uniform random number generators. Each candidate random number is evaluated for whether it is include in the sample, based on the ratio of the standard normal density at that value to the density at the previous value. The tuning parameter “A” affects how often a candidate value is accepted or rejected. The trick is to set A so that not too many candidates are accepted or rejected; that is, we want a a sampler that is <em>efficient</em>.</p>
+<p>When we run a model in NIMBLE the MCMC algorithm spends some time at first adjusting the tuning parameters before the chains run. This is called the <em>adaptation phase</em>. After this is <em>burn-in</em>, when the Markov chains are allowed to run from their initial values and converge on parameter estimates. After that, the iterations or draws used for inference are generated. Ideally we want to use more than 1 Markov chain, each starting from a different initial value. Three chains are common in Bayesian analysis.</p>
+<p>&nbsp;</p>
+</section>
+<section id="once-we-have-the-markov-chains" class="level2">
+<h2 class="anchored" data-anchor-id="once-we-have-the-markov-chains">1.4 Once we have the Markov chains…?</h2>
+<p>Once the Markov chains stop running, we are left with a series of random numbers from the joint posterior distribution <span class="math inline">\(p(\theta|x)\)</span>. From an example we’ll encounter later (a model of the mean), we could have values for the two parameters that look like this:</p>
+<p><span class="math display">\[\mu: 4.28, 6.09, 7.37, 6.10, 4.72, 6.67...\]</span> <span class="math display">\[\sigma^2: 10.98, 11.23, 15.26, 9.17, 9.17, 14.82, 18.19...\]</span></p>
+<p>Next steps:</p>
+<ol type="1">
+<li>Make sure the MCMCs have converged on stable parameter estimates.</li>
+</ol>
+<p>The chain values should not be influenced by the choice of starting values, so we allow some time for the effect to initial values to disappear. We do this by discarding the burn-in iterations once convergence in apparent.</p>
+<p>Checks of convergence</p>
+<ol type="1">
+<li>Plot parameter MCMC values against iteration number (a “traceplot”). The Markov chains should jiggle around a lot (giving a “grassy” appearance to the graph) but have no trend.</li>
+<li>Look at the Brooks-Gelman-Rubin statistic. It should be calculated automatically if you ran your analysis with more than one chain. It compares between- and within-chain variation in a way similar to an ANOVA. Values near 1 (generally &lt;1.1) indicate convergence.</li>
+</ol>
+<p>It is important to do both of these checks; one check alone is not enough to assure convergence.</p>
+<ol start="2" type="1">
+<li>Summarize samples to estimate mean, mode, standard deviation, 95% CRIs. Because we are estimating a distribution rather than a single point, we need summaries of that distribution.</li>
+<li>Compute posterior distributions for derived variables. It’s easy to calculate any function of model parameters, along with exact standard errors, while fully accounting for all the uncertainty involved in computing the function, without the need for approximations like the delta method. For example, we might calculate a rate of population change from two consecutive estimates of abundance: <span class="math inline">\(N_2 / N_1 = \lambda\)</span>. Uncertainty in the estimation of <span class="math inline">\(\lambda\)</span> is incorporated from the two estimates of <span class="math inline">\(N\)</span>.</li>
+<li>Form predictions from model output. We can calculate predicted values of response variables with uncertainty. Those predictions are functions of parameters and data; their posterior distributions can be used for inference. The mean and 95% CRIs can be used as the prediction value and 95% prediction interval.</li>
+</ol>
+<p>&nbsp;</p>
+</section>
+<section id="some-comments-on-statistical-modelling-whether-bayesian-or-classical" class="level2">
+<h2 class="anchored" data-anchor-id="some-comments-on-statistical-modelling-whether-bayesian-or-classical">1.5 Some comments on statistical modelling, whether Bayesian or classical</h2>
+<p>Checking model adequacy</p>
+<ul>
+<li>For simple models (linear models or generalize linear models), the standard model diagnostics based on residuals (e.g.&nbsp;plots of residuals versus fitted values, histograms) are generally adequate.</li>
+<li>For complex, hierarchical models, checking is not so simple. Some methods for checking:
+<ul>
+<li>internal cross-validation;</li>
+<li>validation against external data;</li>
+<li>posterior predictive checks (e.g.&nbsp;Bayesian <span class="math inline">\(p\)</span>-values for measuring goodness-of-fit of models to data)</li>
+</ul></li>
+</ul>
+<p>Hypothesis testing and model selection</p>
+<ul>
+<li>We can test whether a parameter does not equal some hypothesized value (e.g.&nbsp;zero) by whether CRIs overlap that value, as with classical statistics.</li>
+<li>But we can also make direct probability statements about the magnitude of a value.</li>
+<li>We can use indicator variables (<span class="math inline">\(w\)</span>) multiplied by a parameter to assess the probability that it belongs in a model.
+<ul>
+<li>We define a prior distribution: <span class="math inline">\(w \sim {\sf Bernoulli}(p = 0.5)\)</span></li>
+<li>The posterior distribution for <span class="math inline">\(w\)</span> gives the probability that the associated effect belongs in the model</li>
+<li>It can also be used to calculate model-averaged estimates of parameters, but the MCMCs run very slowly.</li>
+</ul></li>
+<li>For model selection in non-hierarchical models (e.g.&nbsp;linear and generalized liner), deviance information criterion (DIC) works exactly like Akaikes information criterion (AIC) in classical statistics.
+<ul>
+<li>It expresses a trade-off between model fit and model complexity.</li>
+<li>Calculated as deviance <span class="math inline">\(+ 2 \times\)</span> the effective number of parameters.</li>
+<li>For hierarchical models, this method gets complicated and is not particularly reliable.</li>
+<li>Reversible-jump MCMC is useful for figuring deciding how much complexity belongs in a model. More to come.</li>
+</ul></li>
+</ul>
+<p>In the minds of ecologists, the model selection problem (based on classical statistics, AIC and its variants) seems to have been solved. Among statisticians, this is not generally considered true.</p>
+<p>Parameter identifiability</p>
+<ul>
+<li>A parameter is identifiable if there is enough information in the data to estimate the parameter unambiguously.</li>
+<li>This is generally not an issue in Bayesian analysis. At worst, the posterior distribution will be the same as the prior distribution; a useful test for identifiability is to compare prior and posterior distributions for a parameter.</li>
+<li>A lack of convergence could indicate lack of identifiability, but this could be caused by other problems, too.</li>
+<li>We can use data simulation and an estimated model to see whether we can recover the original parameter values.</li>
+</ul>
+<p>&nbsp;</p>
+</section>
+<section id="model-of-the-mean" class="level2">
+<h2 class="anchored" data-anchor-id="model-of-the-mean">1.6 Model of the mean</h2>
+<p>Simulate two data sets of body masses, one for 10 birds and one for 1000:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">### Simulate data sets</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate two samples of body mass measurements of male peregrines</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>y10 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">600</span>, <span class="at">sd =</span> <span class="dv">30</span>) <span class="co"># Sample of 10 birds</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>y1000 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">mean =</span> <span class="dv">600</span>, <span class="at">sd =</span> <span class="dv">30</span>) <span class="co"># Sample of 1000 birds</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot data</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> y10), <span class="at">binwidth =</span> <span class="dv">20</span>, <span class="at">colour =</span> <span class="st">'white'</span>) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">450</span>, <span class="dv">750</span>) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Body mass (g) of 10 male peregrines'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> y1000), <span class="at">binwidth =</span> <span class="dv">20</span>, <span class="at">colour =</span> <span class="st">'white'</span>) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">450</span>, <span class="dv">750</span>) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Body mass (g) of 1000 male peregrines'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Analysis using R</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y1000) <span class="sc">~</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Analysis using NIMBLE</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nimble)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MCMCvis)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the model</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>model.pere1 <span class="ot">&lt;-</span> <span class="fu">nimbleCode</span>({</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Priors</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  population.mean <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">5000</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  population.variance <span class="ot">&lt;-</span> population.sd <span class="sc">*</span> population.sd</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  population.sd <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">100</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Likelihood</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nobs){</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    mass[i] <span class="sc">~</span> <span class="fu">dnorm</span>(population.mean, <span class="at">sd =</span> population.sd)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Package all the information needed for NIMBLE to run the analysis (data and constants). Data are observations of variables that have some random element to them. Constants are fixed quantities that do not change (like the size of a sample once data collection is finished).</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bundle data to be passed to NIMBLE</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Constants and data must be specified separately</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>my.constants <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">nobs =</span> <span class="fu">length</span>(y1000))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>my.data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">mass =</span> y1000)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Define a function that specifies random starting values for the Markov chains. Specify the parameters we want NIMBLE to keep track of (things we want estimates for). Settings for Markov chains: no. chains, no. draws from posterior for each chain, no. burn-in iterations that are discarded, and thinning rate.</p>
+<p>How to choose iterations.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to generate starting values</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>my.inits <span class="ot">&lt;-</span> initial.values <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">list</span>(<span class="at">population.mean =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,<span class="dv">600</span>),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">population.sd =</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">30</span>))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters to be monitored (= to estimate)</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>my.params <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'population.mean'</span>, <span class="st">'population.sd'</span>, <span class="st">'population.variance'</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># MCMC settings</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>nc <span class="ot">&lt;-</span> <span class="dv">3</span>                 <span class="co"># Number of chains</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>ni <span class="ot">&lt;-</span> <span class="dv">1000</span>          <span class="co"># Number of draws from posterior (for each chain)</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="dv">1</span>                 <span class="co"># Number of draws to discard as burn-in</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>nt <span class="ot">&lt;-</span> <span class="dv">1</span>                 <span class="co"># Thinning rate</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finally, we use the function <span class="math inline">\(\tt{nimbleMCMC()}\)</span> to run the run the analysis and save results in the object <span class="math inline">\(\tt{out}\)</span></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start Gibbs sampler: Run model in NIMBLE and save results in object called 'out'</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">nimbleMCMC</span>(<span class="at">code =</span> model.pere1,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> my.data,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">constants =</span> my.constants,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">inits =</span> my.inits,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">monitors =</span> my.params,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">thin =</span> nt, <span class="at">niter =</span> ni, <span class="at">nburnin =</span> nb, <span class="at">nchains =</span> nc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You’ll see text showing NIMBLE setting up the analysis, then a pause… it might feel like a long pause, but don’t panic… then you can see the progress of chains running. When it is finished, the object <span class="math inline">\({\tt out}\)</span> appears in the workspace. Let’s have a look.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Information contained in the object 'out'</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(out)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The object <span class="math inline">\({\tt out}\)</span> is a list containing the three Markov chains. We can look at the size of each chain:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(out<span class="sc">$</span>chain1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The dimensions reflect the number of iterations (i.e.&nbsp;niter – nburnin) and the number of parameters we are estimating. We can look at the first few values in one of the chains like this:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(out<span class="sc">$</span>chain1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We see a column of values for each parameter we were estimating. If we want to make inferences from these values, we need to compute posterior summaries:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the mean of each parameter for chain1</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(out<span class="sc">$</span>chain1[,<span class="st">'population.mean'</span>])</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(out<span class="sc">$</span>chain1[,<span class="st">'population.sd'</span>])</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(out<span class="sc">$</span>chain1[,<span class="st">'population.variance'</span>])</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># the 95% credible interval for each parameter in chain1</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(out<span class="sc">$</span>chain1[,<span class="st">'population.mean'</span>], <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(out<span class="sc">$</span>chain1[,<span class="st">'population.sd'</span>], <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(out<span class="sc">$</span>chain1[,<span class="st">'population.variance'</span>], <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># histogram of posterior distribution of population.mean for chain1</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>out <span class="sc">%&gt;%</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> chain1[,<span class="st">'population.mean'</span>]), <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span> </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">'Mean body mass (g)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A much easier way to summarize the Markov chain values is to use a summarizing function like MCMCsummary in library MCMCvis:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MCMCvis)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># the combined summary of the values of all Markov chains</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">MCMCsummary</span>(out, <span class="at">round =</span> <span class="dv">2</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># to plot the estimates and 95% CRIs:</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">MCMCplot</span>(<span class="at">object =</span> out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># trace plots and densities of the chains</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">MCMCtrace</span>(out, <span class="at">pdf =</span> <span class="cn">FALSE</span>, <span class="at">ind =</span> <span class="cn">TRUE</span>, <span class="at">Rhat =</span> <span class="cn">TRUE</span>, <span class="at">n.eff =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We’ll learn later about how to interpret the graphs.</p>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">1.7 Exercises</h2>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">1.8 References</h2>
+<p>If you want to learn more about NIMBLE, I recommend these online resources:<br>
+https://oliviergimenez.github.io/nimble-workshop/<br>
+https://oliviergimenez.github.io/banana-book/intronimble.html</p>
+<p>Kéry M (2010) Introduction to WinBUGS for ecologists. Academic Press, London, UK.</p>
+<p>King R, Morgan BJT, Gimenez O, Brooks SP (2009) Bayesian analysis for population ecology. CRC Press, Boca Raton, USA.</p>
+<p>Link WA, Barker, RJ (2010) Bayesian inference with ecological applications. Academic Press, London, UK.</p>
+<p>Royle JA, Dorazio RM (2008) Hierarchical modelling and inference in ecology. Academic Press, London, UK.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lesson 2: linear models – Applied statistical modelling for the environmental sciences</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-2f02ddf7f6575c31a7e084de16de669d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Lesson02_LinearModels.html">Lesson 2: linear models</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Applied statistical modelling for the environmental sciences</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson01_Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 1: introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson02_LinearModels.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lesson 2: linear models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson03_TTest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 3: t-test</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson04_Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 4: regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson05_ANOVA1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 5: one-way ANOVA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson06_ANOVA2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 6: two-way ANOVA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson07_GeneralLinear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 7: general linear model</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson08_LinearMixed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 8: linear mixed-effects models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson09_GLM1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 9: introduction to generalised linear models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson10_GLM2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 10: GLM, overdispersion and offsets</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson11_PoissonANCOVA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 11: Poisson ANCOVA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson12_PoissonGLMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 12: Poisson mixed-effects models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson13_BinomialTtest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 13: binomial t-test</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson14_BinomialANCOVA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 14: binomial ANCOVA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson15_BinomialGLMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 15: binomial GLMM</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lesson 2: linear models</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Readings: Kéry (2010) chapter 6</p>
+<p>&nbsp;</p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">2.1 Introduction</h2>
+<p>When we use a statistical model, we are modelling variation in an observed response. The model we use contains a deterministic bit and a stochastic bit:</p>
+<p>response = deterministic (systematic) bit + stochastic (random) bit</p>
+<p>It is the stochastic bit that makes the model statistical. To model that part, we need to choose a distribution.</p>
+<ul>
+<li>The distribution we use depends on the sampling situation (i.e.&nbsp;how the sample units were chose and measured).</li>
+<li>The <em>response</em> is the quantity whose variation we want to explain.</li>
+<li>The statistical distributions we will focus on in this course will be normal, uniform, binomial and Poisson.</li>
+</ul>
+<p>What is a linear model?</p>
+<ul>
+<li>Such models assume that the mean or expected response can be treated as the result of <em>explanatory variables that can be added together</em>.</li>
+<li>The <em>linear predictor</em> in a linear model is described by the <em>design matrix</em>.</li>
+<li>The design matrix and the observed values of the covariates together make up the deterministic part of the linear model.</li>
+<li>When we combine them, we get the expected or mean response of the linear predictor.</li>
+</ul>
+<p><strong>Why this is important:</strong> When we use standard statistics software to fit a linear model, it’s easy enough to provide the form of the model and let the software do everything else for us. It sets up the probability distributions and design matrices, and we can remain blissfully unaware of what is happening under the bonnet. This will change when we get to Bayesian analysis and the BUGS software. To set up an analysis in BUGS, we will need to understand design matrices and probability distributions for the models we want to use. This does require knowing more about how to set up statistical models, but it also gives us a lot more freedom to use custom models that might not be available in standard stats software.</p>
+<p>&nbsp;</p>
+</section>
+<section id="the-stochastic-bit" class="level2">
+<h2 class="anchored" data-anchor-id="the-stochastic-bit">2.2 The stochastic bit</h2>
+<p>When we fit a linear model to some data,</p>
+<ul>
+<li>We are trying to describe some aspect of nature, but nature is stochastic (i.e there is an element of chance in what we observe).</li>
+<li>That randomness in a statistical relationship represents the influence of factors that we haven’t measured. The reason for the effect might be present, we just might not know what it is.</li>
+<li>Random variables, then, have an outcome that is only partially predictable because of that chance influence.</li>
+<li>However, a statistical distribution can do a reasonably good job of describing the combined effect of all the unmeasured factors that affect the value of a variable.</li>
+<li>A probability distribution assigns a probability of occurrence to each possible realisation, value or event of a random variable.</li>
+<li>All possible realisations must be described so that the sum of their probabilities is 1.</li>
+<li>Examples of random variables:
+<ul>
+<li>survival of a medical subject on an experimental drug treatment;</li>
+<li>nitrogen concentration in the soil at a particular sampling site;</li>
+<li>sex of a newborn offspring;</li>
+<li>maximum temperature on a particular day;</li>
+<li>a count of people in a pub;</li>
+<li>height of a tree.</li>
+</ul></li>
+</ul>
+<p><em>Parameters</em> describe the form of a probability distribution.</p>
+<ul>
+<li>Our goal is often to estimate parameters.</li>
+<li>A mathematical formula containing these parameters is used to describe the distribution.</li>
+</ul>
+<p>Typical features of statistical distributions</p>
+<ul>
+<li>Some are discrete, non-negative integers (e.g.&nbsp;binomial, Poisson).</li>
+<li>Some are continuous (e.g.&nbsp;normal, uniform).</li>
+<li>Circumstances and methods of data collection usually point to an obvious choice for the probability distribution.
+<ul>
+<li>Binomial or Poisson are used for discrete counts.</li>
+<li>Normal or uniform are used for continuous measurements.</li>
+<li>In practice there can be some overlap; e.g.&nbsp;with a large sample, Poisson or binomial distributions can be approximated by the normal distribution.</li>
+</ul></li>
+</ul>
+<p>&nbsp;</p>
+<section id="normal-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="normal-distribution">2.2.1 Normal distribution</h3>
+<p><em>Sampling situation</em>: measurements that are affected by many factors whose effects are additive.<br>
+<em>Example</em>: body mass, height, other linear measurements. We’ll get to this in later lessons, but in BUGS it can be used with a large variance to specify a non-informative prior distribution (i.e.&nbsp;to represent a quantity about which there is poor prior understanding).<br>
+<em>Variants</em>: in the log-normal distribution, the effect are multiplicative; when we log-transform such values, they become normally distributed.<br>
+<em>Graph</em>: bell shaped, symmetrical, unimodal, moderately long tails, can look skewed with small samples.<br>
+<em>The maths</em>: contains two parameters, the mean (<span class="math inline">\(\mu\)</span>, central tendency or location) and standard deviation (<span class="math inline">\(\sigma\)</span>, spread or average deviation from the mean). In BUGS, you will sometimes see precision (<span class="math inline">\(\tau\)</span>) instead of variance (<span class="math inline">\(\sigma^2\)</span>): <span class="math inline">\(\tau = 1/ \sigma^2\)</span></p>
+<p>Specification in BUGS: <span class="math inline">\({\tt x \sim dnorm(mean, sd)}\)</span></p>
+<p>Mean and standard deviation: <span class="math display">\[E(y) = \mu\]</span> <span class="math display">\[SD(y) = \sigma\]</span></p>
+<p>Histogram of numbers drawn from a normal distribution:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100000</span> <span class="co"># sample size</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">600</span> <span class="co"># average body mass of male peregrines</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">&lt;-</span> <span class="dv">30</span> <span class="co"># SD of body mass of male peregrines</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> mu, <span class="at">sd =</span> sd)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sample[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">dig =</span> <span class="dv">4</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sample, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">main =</span> <span class="st">''</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>&nbsp;</p>
+</section>
+<section id="continuous-uniform-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="continuous-uniform-distribution">2.2.2 Continuous uniform distribution</h3>
+<p><em>Sampling situation</em>: measurements that are all equally likely to occur, but they occur within a bounded range.<br>
+<em>Example</em>: in BUGS, it can be used to specify a non-informative prior (alternative to a “flat” normal).<br>
+<em>Variants</em>: discrete uniform, for when values must be integers.<br>
+<em>Graph</em>: rectangular shape with some sampling variability.<br>
+<em>The maths</em>: contains two parameters: <span class="math inline">\(a\)</span> is the upper limit and <span class="math inline">\(b\)</span> is the lower limit.<br>
+</p>
+<p>Specification in BUGS: <span class="math inline">\({\tt x \sim dunif(lower, upper)}\)</span></p>
+<p>Mean and standard deviation: <span class="math display">\[E(y) = (a + b)/2\]</span> <span class="math display">\[SD(y) = \sqrt{(b-a)^2 / 12}\]</span></p>
+<p>Histogram of numbers drawn from a uniform distribution:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100000</span> <span class="co"># sample size</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># lower limit</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># upper limit</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="at">n =</span> n, <span class="at">min =</span> a, <span class="at">max =</span> b)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sample[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">dig =</span> <span class="dv">4</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sample, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">main =</span> <span class="st">''</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>&nbsp;</p>
+</section>
+<section id="binomial-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="binomial-distribution">2.2.3 Binomial distribution</h3>
+<p><em>Sampling situation</em>: we have <span class="math inline">\(N\)</span> units, and each has a probability <span class="math inline">\(p\)</span> of having a certain state (e.g.&nbsp;heads, survive, observed, female).<br>
+<em>Example</em>: number of males in a herd of size <span class="math inline">\(N\)</span>; it is important that <span class="math inline">\(N\)</span> is potentially known (or knowable).<br>
+<em>Variants</em>: the Bernoulli distribution is the binomial when <span class="math inline">\(N = 1\)</span>, or the binomial is the sum of <span class="math inline">\(N\)</span> Bernoulli trials.<br>
+<em>Graph</em>: always discrete. It can be skewed, but that depends on <span class="math inline">\(N\)</span> and <span class="math inline">\(p\)</span>. The graph is symmetrical when <span class="math inline">\(p = 0.5\)</span>.<br>
+<em>The maths</em>: contains 1 or 2 parameters, the success probability <span class="math inline">\(p\)</span> and the binomial total <span class="math inline">\(N\)</span>. Often <span class="math inline">\(N\)</span> is observed and therefore not a parameter, and our aim is to estimate <span class="math inline">\(p\)</span> from data. But sometimes our aim is to estimate <span class="math inline">\(N\)</span> as well.<br>
+<em>Important</em>: variance is a function of the mean: <span class="math inline">\(\sigma^2 = N \times p \times (1-p)\)</span>. There is no separate parameter for variance.</p>
+<p>Specification in BUGS: <span class="math inline">\({\tt x \sim dbin(p, N)}\)</span><br>
+Or the Bernoulli: <span class="math inline">\({\tt x \sim dbern(p)}\)</span></p>
+<p>Mean and standard deviation: <span class="math display">\[E(y) = N \times p\]</span> <span class="math display">\[SD(y) = \sqrt{N \times p \times (1-p)}\]</span></p>
+<p>Histogram of numbers drawn from a binomial distribution:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100000</span> <span class="co"># sample size</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">16</span> <span class="co"># number of trials</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.8</span> <span class="co"># probability of a success for each trial</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n =</span> n, <span class="at">size =</span> N, <span class="at">prob =</span> p)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sample[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">dig =</span> <span class="dv">4</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sample, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">main =</span> <span class="st">''</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>&nbsp;</p>
+</section>
+<section id="poisson-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="poisson-distribution">2.2.4 Poisson distribution</h3>
+<p><em>Sampling situation</em>: units are randomly distributed in one or two dimensions, and we randomly apply a “counting window” (e.g.&nbsp;a plot on the ground to count plants).<br>
+<em>Example</em>: number of birds in a sampling quadrat, number of customers going through a till at Woolworth’s in one hour.<br>
+<em>Variants</em>: it approximates the binomial distribution when <span class="math inline">\(N\)</span> is large and <span class="math inline">\(p\)</span> is small. It can be approximated by a normal distribution when average count (<span class="math inline">\(\lambda\)</span>) is large (&gt;10). The negative binomial distribution is an over-dispersed version where <span class="math inline">\(\lambda\)</span> itself is a random variable with a gamma distribution (i.e.&nbsp;Poisson-gamma mixture).<br>
+<em>Graph</em>: normal-looking, but with skew. The amount of skew depends on the value of <span class="math inline">\(\lambda\)</span>.<br>
+<em>The maths</em>: It contains the single parameter <span class="math inline">\(\lambda\)</span>, the mean or expected count (or sometimes density or “intensity”). The mean of the distribution is equal to the variance.<br>
+<em>Important</em>: The values from Poisson distribution are non-negative integers. There is no separate variance parameter.</p>
+<p>Specification in BUGS: <span class="math inline">\({\tt x \sim dpois(lambda)}\)</span><br>
+</p>
+<p>Mean and standard deviation: <span class="math display">\[E(y) = \lambda\]</span> <span class="math display">\[SD(y) = \sqrt{\lambda}\]</span></p>
+<p>Histogram of numbers drawn from a Poisson distribution:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100000</span> <span class="co"># sample size</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="co"># average count per sample, density</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="at">n =</span> n, <span class="at">lambda =</span> lambda)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sample[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">dig =</span> <span class="dv">4</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sample, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">main =</span> <span class="st">''</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>&nbsp;</p>
+</section>
+</section>
+<section id="the-deterministic-bit" class="level2">
+<h2 class="anchored" data-anchor-id="the-deterministic-bit">2.3 The deterministic bit</h2>
+<p>The deterministic part of the linear model consists of the linear predictor and the design matrix. Here is a short introduction:</p>
+<ul>
+<li>For each observation of the response, the design matrix indicates which effect is present (for categorical variables) and what amount of effect is present (for continuous variables).</li>
+<li>There are an many columns as the fitted model has parameters.</li>
+<li>When the design matrix is multiplied with the vector of parameters, it calculates the linear predictor vector.</li>
+<li>These are the mean or expected values of the response given the values of all the explanatory variables in the model (i.e.&nbsp;when all random variation is averaged out).</li>
+</ul>
+<p>From here we will cover how to specify design matrices for some standard statistical analyses, and we’ll cover different ways of specifying the same model (i.e.&nbsp;different parametrisations). To help us, we’ll use a toy dataset to work through some examples. Let’s imagine we have a sample of six snakes (Snakes? Did you say snakes?) from three populations. For each snake we also recorded region (categorical, two levels), habitat (categorical, three levels) and snout-ventral length (continuous).</p>
+<p>This code in R sets up the variables.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mass <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">11</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>))    <span class="co"># 'factor' specifies the levels of</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)) <span class="co"># categorical variables</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>hab <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>svl <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">45</span>, <span class="dv">39</span>, <span class="dv">50</span>, <span class="dv">52</span>, <span class="dv">57</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>&nbsp;</p>
+<section id="model-of-the-mean" class="level3">
+<h3 class="anchored" data-anchor-id="model-of-the-mean">2.3.1 Model of the mean</h3>
+<p>Setting up this model in R is easily done with</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formula: <span class="math display">\[mass_i = \mu + \epsilon_i\]</span> <span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span></p>
+<p>Interpretation:</p>
+<ul>
+<li>The mass of each snake <span class="math inline">\(i\)</span> is composed of an overall mean <span class="math inline">\(\mu\)</span> plus an individual deviation from that mean <span class="math inline">\(\epsilon_i\)</span>.</li>
+<li>The <span class="math inline">\(\epsilon_i\)</span>s are the residuals, and we need to specify a probability distribution for them: <span class="math inline">\(\epsilon_i \sim {\sf Normal}(0, \sigma^2)\)</span></li>
+</ul>
+<p>To see the design matrix in R:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(mass <span class="sc">~</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>&nbsp;</p>
+</section>
+<section id="t-test" class="level3">
+<h3 class="anchored" data-anchor-id="t-test">2.3.2 t-test</h3>
+<p>We can use a t-test when we have a binary explanatory variable (<span class="math inline">\(region\)</span>) and a continuous response variable (<span class="math inline">\(mass\)</span>). To specify this test in R as a linear model:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To get the results of the test:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(mass <span class="sc">~</span> region))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formula: <span class="math display">\[mass_i = \alpha + \beta \times region_i + \epsilon_i\]</span> <span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span></p>
+<p>Interpretation:</p>
+<ul>
+<li>The mass of snake <span class="math inline">\(i\)</span> is composed of a baseline mass (<span class="math inline">\(\alpha\)</span>) plus an amount that depends on the region the snake is from (<span class="math inline">\(\beta\)</span>).</li>
+<li>The <span class="math inline">\(\epsilon_i\)</span>s represent the unexplained variation attributed to the individual differences between snakes. Once again, we assume a normal distribution for the residuals.</li>
+</ul>
+<p>A second equivalent formulation of this model: <span class="math display">\[mass_i \sim {\sf Normal}(\alpha + \beta \times region_i, \sigma^2)\]</span></p>
+<p>This formulation is similar to how we specify models in BUGS. The deterministic bit is <span class="math inline">\(\alpha + \beta \times region_i\)</span> and the stochastic bit is represented by <span class="math inline">\({\sf Normal}(..., \sigma^2)\)</span></p>
+<p>A third equivalent formulation of this model: <span class="math display">\[mass_i = \mu_i + \epsilon_i\]</span></p>
+<p>In this formulation, <span class="math inline">\(mass\)</span> is a the sum of a systematic effect represented by expected mass <span class="math inline">\(\mu_i\)</span> and a random amount <span class="math inline">\(\epsilon_i\)</span>.</p>
+<ul>
+<li>The expected mass (<span class="math inline">\(\mu_i\)</span>) consists of <span class="math inline">\(\alpha + \beta \times region_i\)</span>.</li>
+<li>This is referred to as the <em>linear predictor model</em>, where residuals are assumed to follow a normal distribution centred on the linear predictor.</li>
+</ul>
+<p>However we specify the model, we need to understand what R does with a variable like <span class="math inline">\(region\)</span> in a linear model. R converts the linear model into a design matrix with two columns.</p>
+<ul>
+<li>The first column contains 1s corresponding to the intercept in the model.</li>
+<li>The second column contains a dummy variable with 0s and 1s, indicating which snakes were caught in the region indicated by the column’s name.</li>
+</ul>
+<p>Here is what that looks like in R:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>By default, R uses the “treatment contrasts” parametrisation, and the estimate estimate associated with <span class="math inline">\(region2\)</span> is the estimated difference between the regions.</p>
+<p>Matrix form of the model:</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+6\\
+8\\
+5\\
+7\\
+9\\
+11
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+1 &amp; 0\\
+1 &amp; 0\\
+1 &amp; 0\\
+1 &amp; 0\\
+1 &amp; 1\\
+1 &amp; 1
+\end{array}\right]
+\times
+\left[\begin{array}{cc}
+\alpha\\
+\beta
+\end{array}\right]
++
+\left[\begin{array}{cc}
+\epsilon_1\\
+\epsilon_2\\
+\epsilon_3\\
+\epsilon_4\\
+\epsilon_5\\
+\epsilon_6
+\end{array}\right]
+\]</span></p>
+<ul>
+<li>The intercept is identical for all values of the response variable, and so is always represented by 1 (first column in the design matrix).</li>
+<li>To solve for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> we need some way of dealing with the residuals <span class="math inline">\(\epsilon_i\)</span> (e.g.&nbsp;we could find values that minimise the sum of the squared residuals–least squares).</li>
+<li>Taken together, the response consists of the linear predictor plus the vector of residuals, with the linear predictor being made up of the design matrix and the parameter vector.</li>
+</ul>
+<p>We can call R to fit the model for us:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Because we are using the default treatment contrasts parametrisation,</p>
+<ul>
+<li>the intercept is the mean for <span class="math inline">\(mass\)</span> for <span class="math inline">\(region1\)</span>;</li>
+<li>the <span class="math inline">\(region2\)</span> coefficient is the difference in <span class="math inline">\(mass\)</span> between regions 1 and 2;</li>
+<li>the model is estimating the effect of <span class="math inline">\(region\)</span> on <span class="math inline">\(mass\)</span> (i.e.&nbsp;the difference between regions);</li>
+<li>this can also be called an <em>effects parametrisation</em>.</li>
+</ul>
+<p>We can, however, reparameterize this model to give an estimate of the mean for each region:</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+6\\
+8\\
+5\\
+7\\
+9\\
+11
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+1 &amp; 0\\
+1 &amp; 0\\
+1 &amp; 0\\
+1 &amp; 0\\
+0 &amp; 1\\
+0 &amp; 1
+\end{array}\right]
+\times
+\left[\begin{array}{cc}
+\alpha\\
+\beta
+\end{array}\right]
++
+\left[\begin{array}{cc}
+\epsilon_1\\
+\epsilon_2\\
+\epsilon_3\\
+\epsilon_4\\
+\epsilon_5\\
+\epsilon_6
+\end{array}\right]
+\]</span></p>
+<p>To see this in R:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span>region<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Which parametrisation we use depends on the aims of analysis:</p>
+<ul>
+<li><em>effects</em>: useful for testing whether there is a difference between regions (i.e.&nbsp;testing whether <span class="math inline">\(\beta = 0\)</span>);</li>
+<li><em>means</em>: to obtain a summary or estimates for the two regions;</li>
+<li>however, both models are equivalent.</li>
+</ul>
+<p>&nbsp;</p>
+</section>
+<section id="simple-linear-regression" class="level3">
+<h3 class="anchored" data-anchor-id="simple-linear-regression">2.3.3 Simple linear regression</h3>
+<p>If we are interested in the relationship between two continuous variables (e.g.&nbsp;<span class="math inline">\(mass\)</span> and <span class="math inline">\(svl\)</span>) we can use simple linear regression.</p>
+<p>To run a regression in R:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> svl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formula: <span class="math display">\[mass_i = \alpha + \beta \times svl_i + \epsilon_i\]</span> <span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span> Or: <span class="math display">\[mass_i \sim {\sf Normal}(\alpha + \beta \times svl_i, \sigma^2)\]</span> The difference between this and the t-test is that the explanatory variable <span class="math inline">\(svl\)</span> contains real numbers, not just 1s and 0s.</p>
+<p>Design matrix:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span>svl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Matrix form of the regression model:</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+6\\
+8\\
+5\\
+7\\
+9\\
+11
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+1 &amp; 40\\
+1 &amp; 45\\
+1 &amp; 39\\
+1 &amp; 50\\
+1 &amp; 52\\
+1 &amp; 57
+\end{array}\right]
+\times
+\left[\begin{array}{cc}
+\alpha\\
+\beta
+\end{array}\right]
++
+\left[\begin{array}{cc}
+\epsilon_1\\
+\epsilon_2\\
+\epsilon_3\\
+\epsilon_4\\
+\epsilon_5\\
+\epsilon_6
+\end{array}\right]
+\]</span></p>
+<p>The design matrix contains an intercept and a column with the values for the covariate <span class="math inline">\(svl\)</span>.</p>
+<p>Interpretation of parameters:<br>
+<span class="math inline">\(\alpha\)</span>: expected value of <span class="math inline">\(mass\)</span> at <span class="math inline">\(svl = 0\)</span><br>
+<span class="math inline">\(\beta\)</span>: how much <span class="math inline">\(mass\)</span> changes for each unit change in <span class="math inline">\(svl\)</span>, or the slope of the relationship</p>
+<p>In R:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass<span class="sc">~</span>svl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The analysis output in R suggests a problem. Looking at the intercept, this is the expected value of mass for a snake having length 0. Does it seem realistic? One way to deal with this strange output is to replace <span class="math inline">\(svl\)</span> with <span class="math inline">\(svl - mean(svl)\)</span>, so that the intercept becomes the expected mass at the average of the observed size distribution. Alternatively, we could remove the intercept. Unlike for the t-test, where doing so creates an equivalent, reparameterized model, in regression we are fitting a different model, one with the line being forced through the origin:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span>svl<span class="dv">-1</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> svl<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We see that the slope changes. Fitting a no-intercept model makes sense only if <em>we have a strong biological reason for fitting such a model</em>.</p>
+<p>&nbsp;</p>
+</section>
+<section id="one-way-analysis-of-variance" class="level3">
+<h3 class="anchored" data-anchor-id="one-way-analysis-of-variance">2.3.4 One-way analysis of variance</h3>
+<p>If we have a continuous response variable (<span class="math inline">\(mass\)</span>) and a single categorical variable with &gt;2 levels (<span class="math inline">\(pop\)</span>), we can assess the relationship between the variables with a one-way ANOVA.</p>
+<p>To run an ANOVA in R:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> pop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formula for effects parameterization: <span class="math display">\[mass_i = \alpha + \beta_{j(i)} \times pop_i + \epsilon_i\]</span> <span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span> Or: <span class="math display">\[mass_i \sim {\sf Normal}(\alpha + \beta_{j(i)} \times pop_i, \sigma^2)\]</span></p>
+<p>This form of the model gives us a mean for <span class="math inline">\(pop1\)</span> and two differences (<span class="math inline">\(pop2 - pop1, pop3 - pop1\)</span>).</p>
+<p>Formula for means parameterization:</p>
+<p><span class="math display">\[mass_i = \alpha_{j(i)} \times pop_i + \epsilon_i\]</span> <span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span></p>
+<p>Here we get a estimated mean mass (<span class="math inline">\(\alpha_j\)</span>) for snakes in each population <span class="math inline">\(j\)</span>.</p>
+<p>Design matrices:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># effects parameterization</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span>pop)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># means parameterization</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span>pop<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Matrix form of the effects model:</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+6\\
+8\\
+5\\
+7\\
+9\\
+11
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+1 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0\\
+1 &amp; 1 &amp; 0\\
+1 &amp; 1 &amp; 0\\
+1 &amp; 0 &amp; 1\\
+1 &amp; 0 &amp; 1
+\end{array}\right]
+\times
+\left[\begin{array}{cc}
+\alpha\\
+\beta_2\\
+\beta_3
+\end{array}\right]
++
+\left[\begin{array}{cc}
+\epsilon_1\\
+\epsilon_2\\
+\epsilon_3\\
+\epsilon_4\\
+\epsilon_5\\
+\epsilon_6
+\end{array}\right]
+\]</span></p>
+<p>Matrix form of the means model:</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+6\\
+8\\
+5\\
+7\\
+9\\
+11
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+1 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 1\\
+0 &amp; 0 &amp; 1
+\end{array}\right]
+\times
+\left[\begin{array}{cc}
+\alpha_1\\
+\alpha_2\\
+\alpha_3
+\end{array}\right]
++
+\left[\begin{array}{cc}
+\epsilon_1\\
+\epsilon_2\\
+\epsilon_3\\
+\epsilon_4\\
+\epsilon_5\\
+\epsilon_6
+\end{array}\right]
+\]</span></p>
+<p>To fit an ANOVA in R:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># effect parameterization</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> pop)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># mean parameterization</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> pop<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As mentioned before, which paramterization to choose depends on one’s objectives. Effect models are better for testing for presence of effects, means models are better for summarizing estimates and presentation.</p>
+<p>&nbsp;</p>
+</section>
+<section id="two-way-analysis-of-variance" class="level3">
+<h3 class="anchored" data-anchor-id="two-way-analysis-of-variance">2.3.5 Two-way analysis of variance</h3>
+<p>Two-way or two-factor ANOVA are appropriate when we have a continuous response variable (<span class="math inline">\(mass\)</span>) and two categorical explanatory variables (<span class="math inline">\(region\)</span> and <span class="math inline">\(hab\)</span>). In addition to effects and means parameterizations, we can also consider additive or main-effects models and multiplicative or interaction models.</p>
+<p>Main-effects ANOVA in R:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> region <span class="sc">+</span> hab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>R automatically sets one level of each factor to zero. This is to keep from estimating more parameters than there are data to support (over-parameterization).</p>
+<p>&nbsp;</p>
+<section id="effects-parameterization-main-effects-model" class="level4">
+<h4 class="anchored" data-anchor-id="effects-parameterization-main-effects-model">Effects parameterization, main-effects model</h4>
+<p>In R:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> region <span class="sc">+</span> hab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formula: <span class="math display">\[mass_i = \alpha + \beta_{j(i)} \times region_i + \delta_{k(i)} \times hab_i +  \epsilon_i\]</span> <span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span></p>
+<p>Interpretation:<br>
+<span class="math inline">\(\alpha\)</span>: expected mass of a snake in habitat 1, region 1<br>
+<span class="math inline">\(\beta_j\)</span>: expected mean difference between snakes in regions 1 and 2<br>
+<span class="math inline">\(\delta_k\)</span>: expected mean difference between snakes in habitat 1 and those in habitats 2 and 3.</p>
+<p>Design matrix:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># effects parameterization, main-effects model</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span>region <span class="sc">+</span> hab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Matrix form of the model:</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+6\\
+8\\
+5\\
+7\\
+9\\
+11
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+1 &amp; 0 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 1 &amp; 0\\
+1 &amp; 0 &amp; 0 &amp; 1\\
+1 &amp; 0 &amp; 0 &amp; 0\\
+1 &amp; 1 &amp; 1 &amp; 0\\
+1 &amp; 1 &amp; 0 &amp; 1
+\end{array}\right]
+\times
+\left[\begin{array}{cc}
+\alpha\\
+\beta_2\\
+\delta_2\\
+\delta_3
+\end{array}\right]
++
+\left[\begin{array}{cc}
+\epsilon_1\\
+\epsilon_2\\
+\epsilon_3\\
+\epsilon_4\\
+\epsilon_5\\
+\epsilon_6
+\end{array}\right]
+\]</span></p>
+<p>There is no way to specify the model in a means parameterization.</p>
+<p>&nbsp;</p>
+</section>
+<section id="effects-parameterization-interaction-model" class="level4">
+<h4 class="anchored" data-anchor-id="effects-parameterization-interaction-model">Effects parameterization, interaction model</h4>
+<p>In R:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> region <span class="sc">*</span> hab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formula: <span class="math display">\[mass_i = \alpha + \beta_{j(i)} \times region_i + \delta_{k(i)} \times hab_i + \gamma_{jk(i)} \times region_i \times hab_i + \epsilon_i\]</span> <span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span></p>
+<p>Interpretation is the same as for the main-effects model, but now we have two new coefficients represented by <span class="math inline">\(\gamma_{jk}\)</span> that specifies the interaction effect between the two factors.</p>
+<p>Design matrix:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># effects parameterization, interaction model</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span>region <span class="sc">*</span> hab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Matrix form of the model:</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+6\\
+8\\
+5\\
+7\\
+9\\
+11
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+1 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 0\\
+1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1
+\end{array}\right]
+\times
+\left[\begin{array}{cc}
+\alpha\\
+\beta_2\\
+\delta_2\\
+\delta_3\\
+\gamma_{22}\\
+\gamma_{33}
+\end{array}\right]
++
+\left[\begin{array}{cc}
+\epsilon_1\\
+\epsilon_2\\
+\epsilon_3\\
+\epsilon_4\\
+\epsilon_5\\
+\epsilon_6
+\end{array}\right]
+\]</span></p>
+<p>&nbsp;</p>
+</section>
+<section id="means-parameterization-interaction-model" class="level4">
+<h4 class="anchored" data-anchor-id="means-parameterization-interaction-model">Means parameterization, interaction model</h4>
+<p>In R:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> region <span class="sc">*</span> hab<span class="dv">-1</span><span class="sc">-</span>region<span class="sc">-</span>hab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formula: <span class="math display">\[mass_i = \alpha_{jk(i)} \times region_i \times hab_i + \epsilon_i\]</span> <span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span></p>
+<p>Interpretation: The vector <span class="math inline">\(\alpha_{jk}\)</span> contains six elements, each one representing one combination of levels from <span class="math inline">\(region\)</span> and <span class="math inline">\(hab\)</span>.</p>
+<p>Design matrix:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># means parameterization, interaction model</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span> region <span class="sc">*</span> hab<span class="dv">-1</span><span class="sc">-</span>region<span class="sc">-</span>hab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Matrix form of the model:</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+6\\
+8\\
+5\\
+7\\
+9\\
+11
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0\\
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1
+\end{array}\right]
+\times
+\left[\begin{array}{cc}
+\alpha_{11}\\
+\alpha_{21}\\
+\alpha_{12}\\
+\alpha_{22}\\
+\alpha_{13}\\
+\alpha_{23}
+\end{array}\right]
++
+\left[\begin{array}{cc}
+\epsilon_1\\
+\epsilon_2\\
+\epsilon_3\\
+\epsilon_4\\
+\epsilon_5\\
+\epsilon_6
+\end{array}\right]
+\]</span></p>
+<p>Notice the second column of the design matrix contains only zeros. This column represents region 2, habitat 1, from which we have no observations.</p>
+<p>&nbsp;</p>
+</section>
+</section>
+<section id="analysis-of-covariance" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-of-covariance">2.3.6 Analysis of covariance</h3>
+<p>We specify an ANCOVA model when we have explanatory variables that are both categorical (<span class="math inline">\(pop\)</span>) and continuous (<span class="math inline">\(svl\)</span>). If we specify a main-effects model, the relationship between <span class="math inline">\(mass\)</span> and <span class="math inline">\(svl\)</span> is the same for all populations. If we specify an interaction model, the slope of the relationship differs between populations.</p>
+<p>&nbsp;</p>
+<section id="effect-parameterization-additive-model" class="level4">
+<h4 class="anchored" data-anchor-id="effect-parameterization-additive-model">Effect parameterization, additive model</h4>
+<p>In R:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> pop <span class="sc">+</span> svl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formula: <span class="math display">\[mass_i = \alpha + \beta_{j(i)} \times pop_i + \delta \times svl_i + \epsilon_i\]</span> <span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span></p>
+<p>Interpretation:<br>
+<span class="math inline">\(\alpha\)</span>: intercept for population 1<br>
+<span class="math inline">\(\beta_j\)</span>: vector with two differences, one for <span class="math inline">\(pop2 - pop1\)</span> and one for <span class="math inline">\(pop3 - pop1\)</span><br>
+<span class="math inline">\(\delta\)</span>: common slope of the relationship for all three populations</p>
+<p>Design matrix:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span>pop <span class="sc">+</span> svl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Matrix form of the model:</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+6\\
+8\\
+5\\
+7\\
+9\\
+11
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+1 &amp; 0 &amp; 0 &amp; 40\\
+1 &amp; 0 &amp; 0 &amp; 45\\
+1 &amp; 1 &amp; 0 &amp; 39\\
+1 &amp; 1 &amp; 0 &amp; 50\\
+1 &amp; 0 &amp; 1 &amp; 52\\
+1 &amp; 0 &amp; 1 &amp; 57
+\end{array}\right]
+\times
+\left[\begin{array}{cc}
+\alpha\\
+\beta_1\\
+\beta_2\\
+\delta
+\end{array}\right]
++
+\left[\begin{array}{cc}
+\epsilon_1\\
+\epsilon_2\\
+\epsilon_3\\
+\epsilon_4\\
+\epsilon_5\\
+\epsilon_6
+\end{array}\right]
+\]</span></p>
+<p>&nbsp;</p>
+</section>
+<section id="means-parameterization-additive-model" class="level4">
+<h4 class="anchored" data-anchor-id="means-parameterization-additive-model">Means parameterization, additive model</h4>
+<p>In R:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> pop <span class="sc">+</span> svl<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formula: <span class="math display">\[mass_i = \alpha_{j(i)} \times pop_i + \delta_{j(i)} \times svl_i + \epsilon_i\]</span> <span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span></p>
+<p>Interpretation: Now <span class="math inline">\(\alpha_j\)</span> has three elements, representing the intercept of each population.</p>
+<p>Design matrix:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span>pop <span class="sc">+</span> svl<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Matrix form of the model:</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+6\\
+8\\
+5\\
+7\\
+9\\
+11
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+1 &amp; 0 &amp; 0 &amp; 40\\
+1 &amp; 0 &amp; 0 &amp; 45\\
+0 &amp; 1 &amp; 0 &amp; 39\\
+0 &amp; 1 &amp; 0 &amp; 50\\
+0 &amp; 0 &amp; 1 &amp; 52\\
+0 &amp; 0 &amp; 1 &amp; 57
+\end{array}\right]
+\times
+\left[\begin{array}{cc}
+\alpha_1\\
+\alpha_2\\
+\alpha_3\\
+\delta
+\end{array}\right]
++
+\left[\begin{array}{cc}
+\epsilon_1\\
+\epsilon_2\\
+\epsilon_3\\
+\epsilon_4\\
+\epsilon_5\\
+\epsilon_6
+\end{array}\right]
+\]</span></p>
+<p>&nbsp;</p>
+</section>
+<section id="effects-parameterization-interaction-model-1" class="level4">
+<h4 class="anchored" data-anchor-id="effects-parameterization-interaction-model-1">Effects parameterization, interaction model</h4>
+<p>In R:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> pop<span class="sc">*</span>svl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formula: <span class="math display">\[mass_i = \alpha + \beta_{j(i)} \times pop_i + \delta \times svl_i + \gamma_{j(i)} \times svl_i \times pop_i + \epsilon_i\]</span> <span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span></p>
+<p>Interpretation:<br>
+<span class="math inline">\(\alpha\)</span>: intercept for population 1<br>
+<span class="math inline">\(\beta_j\)</span>: vector with two differences, one for <span class="math inline">\(pop2 - pop1\)</span> and one for <span class="math inline">\(pop3 - pop1\)</span><br>
+<span class="math inline">\(\delta\)</span>: common slope of the relationship for all three populations<br>
+<span class="math inline">\(\gamma_{j}\)</span>: two elements, each is a difference in slope between <span class="math inline">\(pop2\)</span> and <span class="math inline">\(pop1\)</span> and between <span class="math inline">\(pop3\)</span> and <span class="math inline">\(pop1\)</span></p>
+<p>Design matrix:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span>pop<span class="sc">*</span>svl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Matrix form of the model:</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+6\\
+8\\
+5\\
+7\\
+9\\
+11
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+1 &amp; 0 &amp; 0 &amp; 40 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0 &amp; 45 &amp; 0 &amp; 0\\
+1 &amp; 1 &amp; 0 &amp; 39 &amp; 39 &amp; 0\\
+1 &amp; 1 &amp; 0 &amp; 50 &amp; 50 &amp; 0\\
+1 &amp; 0 &amp; 1 &amp; 52 &amp; 0 &amp; 52\\
+1 &amp; 0 &amp; 1 &amp; 57 &amp; 0 &amp; 57
+\end{array}\right]
+\times
+\left[\begin{array}{cc}
+\alpha\\
+\beta_1\\
+\beta_2\\
+\delta\\
+\gamma_1\\
+\gamma_2
+\end{array}\right]
++
+\left[\begin{array}{cc}
+\epsilon_1\\
+\epsilon_2\\
+\epsilon_3\\
+\epsilon_4\\
+\epsilon_5\\
+\epsilon_6
+\end{array}\right]
+\]</span></p>
+<p>&nbsp;</p>
+</section>
+<section id="means-parameterization-interaction-model-1" class="level4">
+<h4 class="anchored" data-anchor-id="means-parameterization-interaction-model-1">Means parameterization, interaction model</h4>
+<p>In R:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> pop <span class="sc">*</span> svl<span class="dv">-1</span><span class="sc">-</span>svl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formula: <span class="math display">\[mass_i = \alpha_{j(i)} \times pop_i + \delta_{j(i)} \times svl_i + \epsilon_i\]</span> <span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span></p>
+<p>Interpretation: for <span class="math inline">\(\gamma_{j}\)</span>, we added the subscript <span class="math inline">\(j\)</span>, meaning that we estimate three slopes, one for each population.</p>
+<p>Design matrix:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span>pop<span class="sc">*</span>svl<span class="dv">-1</span><span class="sc">-</span>svl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Matrix form of the model:</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+6\\
+8\\
+5\\
+7\\
+9\\
+11
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+1 &amp; 0 &amp; 0 &amp; 40 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0 &amp; 45 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0 &amp; 0 &amp; 39 &amp; 0\\
+0 &amp; 1 &amp; 0 &amp; 0 &amp; 50 &amp; 0\\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 52\\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 57
+\end{array}\right]
+\times
+\left[\begin{array}{cc}
+\alpha_1\\
+\alpha_2\\
+\alpha_3\\
+\delta_1\\
+\delta_2\\
+\delta_3
+\end{array}\right]
++
+\left[\begin{array}{cc}
+\epsilon_1\\
+\epsilon_2\\
+\epsilon_3\\
+\epsilon_4\\
+\epsilon_5\\
+\epsilon_6
+\end{array}\right]
+\]</span></p>
+<p>If you are still confused about these different models, how to specify them and how to interpret them, go through Kéry (2010), pages 82-86, and read the text that accompanies each model. He does a good job of explaining statistical modelling in non-complicated (non-technical) language. Now let’s use R to do some analyses using these models.</p>
+<p>&nbsp;</p>
+</section>
+<section id="additive-model-effects-parameterization" class="level4">
+<h4 class="anchored" data-anchor-id="additive-model-effects-parameterization">Additive model, effects parameterization</h4>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>(fm <span class="ot">&lt;-</span> <span class="fu">lm</span>(mass <span class="sc">~</span> pop <span class="sc">+</span> svl))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Interpretation:<br>
+Intercept: expected mass of a snake in population 1 that has <span class="math inline">\(svl = 0\)</span><br>
+<span class="math inline">\(pop2, pop3\)</span>: differences in the intercept for population 2 and 3, each compared to population 1 <span class="math inline">\(svl\)</span>: slope of the relationship between <span class="math inline">\(mass\)</span> and <span class="math inline">\(svl\)</span> for all snakes</p>
+<p>Plot:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> svl, <span class="at">y =</span> mass, <span class="at">colour =</span> pop)) <span class="sc">+</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> fm<span class="sc">$</span>coefficients[<span class="dv">1</span>], <span class="at">slope =</span> fm<span class="sc">$</span>coefficients[<span class="dv">4</span>],</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">'red'</span>) <span class="sc">+</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> fm<span class="sc">$</span>coefficients[<span class="dv">1</span>] <span class="sc">+</span> fm<span class="sc">$</span>coefficients[<span class="dv">2</span>],</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">slope =</span> fm<span class="sc">$</span>coefficients[<span class="dv">4</span>], <span class="at">colour =</span> <span class="st">'green'</span>) <span class="sc">+</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> fm<span class="sc">$</span>coefficients[<span class="dv">1</span>]  <span class="sc">+</span> fm<span class="sc">$</span>coefficients[<span class="dv">3</span>],</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">slope =</span> fm<span class="sc">$</span>coefficients[<span class="dv">4</span>], <span class="at">colour =</span> <span class="st">'blue'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When we fit the additive model, we can see that we get a regression line for each population, each one with its own intercept (two are very similar), but <em>the slope is the same across populations</em>.</p>
+<p>&nbsp;</p>
+</section>
+<section id="interaction-model-effects-parameterization" class="level4">
+<h4 class="anchored" data-anchor-id="interaction-model-effects-parameterization">Interaction model, effects parameterization</h4>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>(fm <span class="ot">&lt;-</span> <span class="fu">lm</span>(mass <span class="sc">~</span> pop <span class="sc">*</span> svl))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Interpretation:<br>
+Intercept: expected mass of a snake in population 1 that has <span class="math inline">\(svl = 0\)</span><br>
+<span class="math inline">\(svl\)</span>: slope of the relationship between <span class="math inline">\(mass\)</span> and <span class="math inline">\(svl\)</span> for all snakes<br>
+Remainder: intercept and slope differences between the two other populations and population 1</p>
+<p>Plot:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> svl, <span class="at">y =</span> mass, <span class="at">colour =</span> pop)) <span class="sc">+</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> fm<span class="sc">$</span>coefficients[<span class="dv">1</span>], <span class="at">slope =</span> fm<span class="sc">$</span>coefficients[<span class="dv">4</span>],</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">'red'</span>) <span class="sc">+</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> fm<span class="sc">$</span>coefficients[<span class="dv">1</span>] <span class="sc">+</span> fm<span class="sc">$</span>coefficients[<span class="dv">2</span>],</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">slope =</span> fm<span class="sc">$</span>coefficients[<span class="dv">4</span>] <span class="sc">+</span> fm<span class="sc">$</span>coefficients[<span class="dv">5</span>],</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">'green'</span>) <span class="sc">+</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> fm<span class="sc">$</span>coefficients[<span class="dv">1</span>]  <span class="sc">+</span> fm<span class="sc">$</span>coefficients[<span class="dv">3</span>],</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">slope =</span> fm<span class="sc">$</span>coefficients[<span class="dv">4</span>] <span class="sc">+</span> fm<span class="sc">$</span>coefficients[<span class="dv">6</span>],</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">colour =</span> <span class="st">'blue'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This time we fit the interaction model, and unlike for the additive model, each population has a line with its own intercept and its own slope. <em>Intercepts and slopes differ between groups when using the interaction model.</em></p>
+<p>Next, just for completeness, we’ll run the means parameterization for the additive and interaction models.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># means, additive</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> pop <span class="sc">+</span> svl<span class="dv">-1</span>)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># means, interaction</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(mass <span class="sc">~</span> pop <span class="sc">*</span> svl<span class="dv">-1</span><span class="sc">-</span>svl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The additive model gives estimates of individual intercept for each population and a common slope. The interaction model gives estimates for the intercepts and slopes for each population.</p>
+<p>&nbsp;</p>
+</section>
+</section>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">2.4 Summary</h2>
+<p>Just a reminder for why this is important: we need to have a good sense of what a statistics package is doing when it fits the different types of linear models we will encounter in this course. This is in terms of knowing which <em>probability distributions</em> to use, how to set up the <em>design matrix</em>, and how different <em>parameterizations</em> set the models up differently. Once we get to modelling with BUGS, we will need do these things explicitly. The different parameterizations are useful because, for a particular data set, some parameterizations will work better than others (e.g.&nbsp;they go faster, or don’t fail).</p>
+<p>&nbsp;</p>
+</section>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">2.5 Example</h2>
+<p>&nbsp;</p>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">2.6 Exercises</h2>
+<p>&nbsp;</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">2.7 References</h2>
+<p>Kéry M (2010) Introduction to WinBUGS for ecologists. Academic Press, London, UK.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

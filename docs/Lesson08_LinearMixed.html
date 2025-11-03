@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lesson 8: linear mixed-effects models – Applied statistical modelling for the environmental sciences</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-2f02ddf7f6575c31a7e084de16de669d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Lesson08_LinearMixed.html">Lesson 8: linear mixed-effects models</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Applied statistical modelling for the environmental sciences</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson01_Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 1: introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson02_LinearModels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 2: linear models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson03_TTest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 3: t-test</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson04_Regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 4: regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson05_ANOVA1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 5: one-way ANOVA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson06_ANOVA2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 6: two-way ANOVA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson07_GeneralLinear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 7: general linear model</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson08_LinearMixed.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Lesson 8: linear mixed-effects models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson09_GLM1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 9: introduction to generalised linear models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson10_GLM2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 10: GLM, overdispersion and offsets</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson11_PoissonANCOVA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 11: Poisson ANCOVA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson12_PoissonGLMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 12: Poisson mixed-effects models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson13_BinomialTtest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 13: binomial t-test</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson14_BinomialANCOVA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 14: binomial ANCOVA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lesson15_BinomialGLMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson 15: binomial GLMM</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lesson 8: linear mixed-effects models</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Readings: Kéry (2010) chapter 12</p>
+<p>&nbsp;</p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">8.1 Introduction</h2>
+<p>This is going to be a foundational lesson for the rest of the course. Much of what we will do in the remaining lessons will require understanding and being able to code models that contain both fixed and random effects. Mixed-effects models are probably the single most important statistical tool in an ecologists toolbox because they are useful for many of the types of data that are collected in the environmental sciences.</p>
+<p>There are at least three benefits to assuming a set of parameters are a random sample coming from a statistical distribution with its own (hyper)parameters to be estimated: (1) increased scope of inference, (2) more honest accounting for system uncertainty, and (3) efficiency of estimation. In this lesson we consider a standard mixed-effects linear model that arises as a direct generalisation of the ANCOVA model we have seen previously. We will return to our simulated snake study (Snakes? Did you say snakes?), but now we will use a larger number of populations (the textbook uses 56). Generally we wouldn’t need so many levels in our random effect to fit a mixed-effects model; 5–10 is usually sufficient if our goal is to get an accurate estimate of the variance they explain.</p>
+<p>We will generate a new simulated data set, but constrain the values for at least one set of effects (intercepts or slopes) to come from a normal distribution. We will cover three possibilities when doing this:</p>
+<ol type="1">
+<li>Intercepts are random, and the slope is identical for all groups (i.e.&nbsp;a random-intercept model).</li>
+<li>Intercepts and slopes are random, but they are independent (i.e.&nbsp;a random-coefficients model).</li>
+<li>Intercepts and slopes are random, and there is correlation between them (i.e.&nbsp;a random-coefficients model).</li>
+</ol>
+<p>Here is one way to write the random-coefficients model without correlation (model 2):</p>
+<p><span class="math display">\[y_i = \alpha_{j(i)} + \beta_{j(i)} \times x_i + \epsilon_i\]</span></p>
+<p><span class="math display">\[\alpha_j \sim {\sf Normal}(\mu_{\alpha}, \sigma^2_{\alpha})\]</span></p>
+<p><span class="math display">\[\beta_j \sim {\sf Normal}(\mu_{\beta}, \sigma^2_{\beta})\]</span></p>
+<p><span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span></p>
+<p>Interpretation:<br>
+<span class="math inline">\(y_i\)</span>: mass of snake <span class="math inline">\(i\)</span><br>
+<span class="math inline">\(x_i\)</span>: length of snake <span class="math inline">\(i\)</span><br>
+<span class="math inline">\(\alpha_j\)</span>: population-specific intercept<br>
+<span class="math inline">\(\beta_j\)</span>: population-specific slope<br>
+<span class="math inline">\(\mu_{\alpha}, \mu_{\beta}\)</span>: means for independent normal distributions for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, respectively<br>
+<span class="math inline">\(\sigma^2_{\alpha}, \sigma^2_{\beta}\)</span>: variances for independent normal distributions for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, respectively<br>
+<span class="math inline">\(\epsilon_i\)</span>: residuals for each snake <span class="math inline">\(i\)</span> distributed as normal with variance <span class="math inline">\(\sigma^2\)</span><br>
+</p>
+<p>&nbsp;</p>
+</section>
+<section id="data-simulation" class="level2">
+<h2 class="anchored" data-anchor-id="data-simulation">8.2 Data simulation</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set up sample sizes and population indicator</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n.groups <span class="ot">&lt;-</span> <span class="dv">56</span>              <span class="co"># no. populations</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>n.sample <span class="ot">&lt;-</span> <span class="dv">10</span>              <span class="co"># no. snakes in each pop</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> n.groups <span class="sc">*</span> n.sample        <span class="co"># total no. data points</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">gl</span>(<span class="at">n =</span> n.groups, <span class="at">k =</span> n.sample)   <span class="co"># indicator for population</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># body length (cm)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>original.length <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">45</span>, <span class="dv">70</span>) </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>mn <span class="ot">&lt;-</span> <span class="fu">mean</span>(original.length)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">&lt;-</span> <span class="fu">sd</span>(original.length)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Mean and sd used to normalise.original length:"</span>, mn, sd, <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>length <span class="ot">&lt;-</span> (original.length <span class="sc">-</span> mn) <span class="sc">/</span> sd</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(length, <span class="at">col =</span> <span class="st">"grey"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># design matrix</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Xmat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span>pop<span class="sc">*</span>length<span class="dv">-1</span><span class="sc">-</span>length)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#print(Xmat, dig = 2)       # if you want to see it</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># set values for parameters and effects</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>intercept.mean <span class="ot">&lt;-</span> <span class="dv">230</span>           <span class="co"># mu_alpha</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>intercept.sd <span class="ot">&lt;-</span> <span class="dv">20</span>          <span class="co"># sigma_alpha</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>slope.mean <span class="ot">&lt;-</span> <span class="dv">60</span>            <span class="co"># mu_beta</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>slope.sd <span class="ot">&lt;-</span> <span class="dv">30</span>              <span class="co"># sigma_beta</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>intercept.effects <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n.groups, <span class="at">mean =</span> intercept.mean,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sd =</span> intercept.sd)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>slope.effects <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n.groups, <span class="at">mean =</span> slope.mean, <span class="at">sd =</span> slope.sd)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>all.effects <span class="ot">&lt;-</span> <span class="fu">c</span>(intercept.effects, slope.effects) <span class="co"># put them all together</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate values for response variable</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>lin.pred <span class="ot">&lt;-</span> Xmat[,] <span class="sc">%*%</span> all.effects <span class="co"># value of lin.predictor</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">30</span>)  <span class="co"># residuals </span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>mass <span class="ot">&lt;-</span> lin.pred <span class="sc">+</span> eps          <span class="co"># response = lin.pred + residual</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># have a look</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(mass, <span class="at">col =</span> <span class="st">"grey"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>snake.df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(mass, length, pop)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> snake.df) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> length, <span class="at">y =</span> mass)) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> pop, <span class="at">ncol =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>&nbsp;</p>
+</section>
+<section id="random-intercepts-model" class="level2">
+<h2 class="anchored" data-anchor-id="random-intercepts-model">8.3 Random-intercepts model</h2>
+<section id="classical-analysis-in-r" class="level3">
+<h3 class="anchored" data-anchor-id="classical-analysis-in-r">8.3.1 Classical analysis in R</h3>
+<p>We will be using function <span class="math inline">\({\tt lmer()}\)</span> to fit linear mixed-effects models. Classical analysis of such models occurs under restricted maximum likelihood (REML), which is useful for when working with unbalanced data. Our simulated data are balanced, but real data rarely are. To begin, we will assume that the mass–length relationship is the same across populations, and only the intercepts differ randomly among populations.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'lme4'</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>lme.fit1 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(mass <span class="sc">~</span> length <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> pop), <span class="at">REML =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>lme.fit1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>&nbsp;</p>
+</section>
+<section id="bayesian-analysis-with-bugs" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-analysis-with-bugs">8.3.2 Bayesian analysis with BUGS</h3>
+<p>When setting up the model in NIMBLE, we’ll need to use a wide uniform distribution for the standard deviation of the random-effects distribution.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the model</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>model.lme1 <span class="ot">&lt;-</span> <span class="fu">nimbleCode</span>({</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># priors</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ngroups){</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    alpha[i] <span class="sc">~</span> <span class="fu">dnorm</span>(mu.int, <span class="at">sd =</span> sigma.int)    <span class="co"># random intercepts</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  mu.int <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">30</span>)        <span class="co"># mean hyperparameter for random intercepts</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  sigma.int <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">100</span>)     <span class="co"># SD hyperparameter for random intercepts</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  beta <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">30</span>)          <span class="co"># common slope</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  sigma <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">100</span>)         <span class="co"># residual standard deviation</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Likelihood</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    mass[i] <span class="sc">~</span> <span class="fu">dnorm</span>(mu[i], <span class="at">sd =</span> sigma)      <span class="co"># the random variable</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    mu[i] <span class="ot">&lt;-</span> alpha[pop[i]] <span class="sc">+</span> beta<span class="sc">*</span>length[i] <span class="co"># expectation</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># data and constants</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>my.data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">mass =</span> <span class="fu">as.numeric</span>(mass), <span class="at">pop =</span> <span class="fu">as.numeric</span>(pop), <span class="at">length =</span> length)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>my.consts <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">ngroups =</span> <span class="fu">max</span>(<span class="fu">as.numeric</span>(pop)), <span class="at">n =</span> n)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># initial values</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>my.inits <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">list</span>(<span class="at">alpha =</span> <span class="fu">rnorm</span>(n.groups, <span class="dv">0</span>, <span class="dv">2</span>), <span class="at">beta =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">mu.int =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="at">sigma.int =</span> <span class="fu">rlnorm</span>(<span class="dv">1</span>), <span class="at">sigma =</span> <span class="fu">rlnorm</span>(<span class="dv">1</span>))</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co"># parameters to estimate</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>my.params <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'alpha'</span>, <span class="st">'beta'</span>, <span class="st">'mu.int'</span>, <span class="st">'sigma.int'</span>, <span class="st">'sigma'</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co"># MCMC settings</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>ni <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>nt <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>nc <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="co"># start Gibbs sampling</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">nimbleMCMC</span>(<span class="at">code =</span> model.lme1,</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> my.data,</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>                   <span class="at">constants =</span> my.consts,</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>                   <span class="at">inits =</span> my.inits,</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>                   <span class="at">monitors =</span> my.params,</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>                   <span class="at">thin =</span> nt, <span class="at">niter =</span> ni, <span class="at">nburnin =</span> nb, <span class="at">nchains =</span> nc)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="co"># look at output</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>(outSum1 <span class="ot">&lt;-</span> <span class="fu">MCMCsummary</span>(out1, <span class="at">round =</span> <span class="dv">2</span>))</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="co"># compare with input values</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>intercept.mean  ;  slope.mean  ;  intercept.sd  ;  slope.sd  ;  <span class="fu">sd</span>(eps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The first thing you likely noticed is that it takes a while longer to run the chains. This will be the case with more complex models like those that will make up the rest of the course. Second is that the variance estimates don’t quite match. For example our simulated value for <span class="math inline">\(sigma\)</span> is 30, but we estimated it to be &gt;40. This is because we simulated the data to have random variation among slopes. Because we did not fit that model here, that unaccounted for variation get absorbed in the residual standard deviation.</p>
+<p>&nbsp;</p>
+</section>
+</section>
+<section id="random-coefficients-model-no-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="random-coefficients-model-no-correlation">8.4 Random-coefficients model (no correlation)</h2>
+<section id="classical-analysis-in-r-1" class="level3">
+<h3 class="anchored" data-anchor-id="classical-analysis-in-r-1">8.4.1 Classical analysis in R</h3>
+<p>Next we will fit a model assuming there is variation in both intercepts and slopes among populations, but that there is no correlation between intercepts and slopes.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'lme4'</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>lme.fit2 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(mass <span class="sc">~</span> length <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>pop) <span class="sc">+</span> (<span class="dv">0</span> <span class="sc">+</span> length<span class="sc">|</span>pop))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>lme.fit2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>&nbsp;</p>
+</section>
+<section id="bayesian-analysis-with-bugs-1" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-analysis-with-bugs-1">8.4.2 Bayesian analysis with BUGS</h3>
+<p>Here is the Bayesian analysis of the same data set, fitting the same random-coefficients model.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the model</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>model.lme2 <span class="ot">&lt;-</span> <span class="fu">nimbleCode</span>({</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># priors</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ngroups){</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    alpha[i] <span class="sc">~</span> <span class="fu">dnorm</span>(mu.int, <span class="at">sd =</span> sigma.int)    <span class="co"># random intercepts</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    beta[i] <span class="sc">~</span> <span class="fu">dnorm</span>(mu.slope, <span class="at">sd =</span> sigma.slope)   <span class="co"># random slopes</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  mu.int <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">30</span>)        <span class="co"># mean hyperparameter for random intercepts</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  sigma.int <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">100</span>)     <span class="co"># SD hyperparameter for random intercepts</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  mu.slope <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">30</span>)      <span class="co"># mean hyperparameter for random slopes</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  sigma.slope <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">100</span>)       <span class="co"># SD hyperparameter for slopes</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  sigma <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">100</span>)         <span class="co"># residual standard deviation</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># likelihood</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    mass[i] <span class="sc">~</span> <span class="fu">dnorm</span>(mu[i], <span class="at">sd =</span> sigma)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    mu[i] <span class="ot">&lt;-</span> alpha[pop[i]] <span class="sc">+</span> beta[pop[i]]<span class="sc">*</span>length[i]</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co"># data and constants</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>my.data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">mass =</span> <span class="fu">as.numeric</span>(mass), <span class="at">pop =</span> <span class="fu">as.numeric</span>(pop), <span class="at">length =</span> length)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>my.consts <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">ngroups =</span> <span class="fu">max</span>(<span class="fu">as.numeric</span>(pop)), <span class="at">n =</span> n)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co"># initial values</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>my.inits <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">list</span>(<span class="at">alpha =</span> <span class="fu">rnorm</span>(n.groups, <span class="dv">0</span>, <span class="dv">2</span>),</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>                            <span class="at">beta =</span> <span class="fu">rnorm</span>(n.groups, <span class="dv">10</span>, <span class="dv">2</span>),</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>                            <span class="at">mu.int =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="at">sigma.int =</span> <span class="fu">rlnorm</span>(<span class="dv">1</span>),</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>                            <span class="at">mu.slope =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="at">sigma.slope =</span> <span class="fu">rlnorm</span>(<span class="dv">1</span>),</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>                            <span class="at">sigma =</span> <span class="fu">rlnorm</span>(<span class="dv">1</span>))</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters to estimate</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>my.params <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'alpha'</span>, <span class="st">'beta'</span>, <span class="st">'mu.int'</span>, <span class="st">'sigma.int'</span>, <span class="st">'mu.slope'</span>,</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>               <span class="st">'sigma.slope'</span>, <span class="st">'sigma'</span>)</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co"># MCMC settings</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>ni <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>nt <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>nc <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co"># start Gibbs sampling</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">nimbleMCMC</span>(<span class="at">code =</span> model.lme2,</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> my.data,</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>                   <span class="at">constants =</span> my.consts,</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>                   <span class="at">inits =</span> my.inits,</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>                   <span class="at">monitors =</span> my.params,</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>                   <span class="at">thin =</span> nt, <span class="at">niter =</span> ni, <span class="at">nburnin =</span> nb, <span class="at">nchains =</span> nc)</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="co"># look at output</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>(outSum2 <span class="ot">&lt;-</span> <span class="fu">MCMCsummary</span>(out2, <span class="at">round =</span> <span class="dv">2</span>))</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="co"># compare with input values</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>intercept.mean  ;  slope.mean  ;  intercept.sd  ;  slope.sd  ;  <span class="fu">sd</span>(eps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This time we get fairly close agreement between simulated and estimated values, and this emphasises again the usefulness of using simulation to assess our models. If we recover estimates that match the input values, that gives us confidence that we’ve specified our model correctly.</p>
+<p>Also important, is that we can get the estimated random effects from the model output. For the NIMBLE output, they are the values associated with the alpha[]’s and beta[]’s in the MCMC summary. For the classical analysis in R, we use the statement <span class="math inline">\({\tt ranef(lme.fit2)}\)</span>.</p>
+<p>&nbsp;</p>
+</section>
+</section>
+<section id="random-coefficients-model-with-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="random-coefficients-model-with-correlation">8.5 Random-coefficients model (with correlation)</h2>
+<section id="introduction-1" class="level3">
+<h3 class="anchored" data-anchor-id="introduction-1">8.5.1 Introduction</h3>
+<p>Now we’ll have a look at the random-coefficients model with correlation between intercepts and slopes. It’s a relatively straight-forward extension of the previous model:</p>
+<p><span class="math display">\[y_i = \alpha_{j(i)} + \beta_{j(i)} \times x_i + \epsilon_i\]</span> <span class="math display">\[(\alpha_j,\beta_j) \sim MVN(\mu, {\bf \Sigma})\]</span> <span class="math display">\[\mu = (\mu_{\alpha}, \mu_{\beta})\]</span> <span class="math display">\[
+{\bf \Sigma} =
+\left(\begin{array}{cc}
+\sigma^2_{\alpha} &amp; \sigma_{\alpha \beta}\\
+\sigma_{\alpha \beta} &amp; \sigma^2_{\beta}
+\end{array}\right)
+\]</span></p>
+<p><span class="math display">\[\epsilon_i \sim {\sf Normal}(0, \sigma^2)\]</span></p>
+<p>Interpretation: the same as before, but now pairs of <span class="math inline">\(\alpha_j\)</span> and <span class="math inline">\(\beta_j\)</span> from each population <span class="math inline">\(j\)</span> are assumed to come from a bivariate or multivariate normal distribution with mean vector <span class="math inline">\(\mu\)</span> and variance-covariance matrix <span class="math inline">\({\bf \Sigma}\)</span>. The matrix contains variances for the intercept (<span class="math inline">\(\sigma^2_{\alpha}\)</span>) and slope (<span class="math inline">\(\sigma^2_{\beta}\)</span>) in the diagonal, and covariances between <span class="math inline">\(\alpha_j\)</span> and <span class="math inline">\(\beta_j\)</span> (<span class="math inline">\(\sigma_{\alpha \beta}\)</span>) in the off-diagonals. If we have positive values for the covariance, that indicates steeper mass–length relationship for snakes with a greater mass.</p>
+<p>&nbsp;</p>
+</section>
+<section id="data-simulation-1" class="level3">
+<h3 class="anchored" data-anchor-id="data-simulation-1">8.5.2 Data simulation</h3>
+<p>Here we simulate data under the random-coefficients model with correlation. We will choose population-specific slopes and intercepts from a bivariate normal distribution having hyperparameters that we will need to set. The distribution of the residuals will once again be a normal distribution with mean zero and standard deviation of 30.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set up sample sizes and population indicator</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>n.groups <span class="ot">&lt;-</span> <span class="dv">56</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>n.sample <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> n.groups <span class="sc">*</span> n.sample </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">gl</span>(<span class="at">n =</span> n.groups, <span class="at">k =</span> n.sample)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># body length (cm)</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>original.length <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">45</span>, <span class="dv">70</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>mn <span class="ot">&lt;-</span> <span class="fu">mean</span>(original.length)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">&lt;-</span> <span class="fu">sd</span>(original.length)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Mean and sd used to normalise.original length:"</span>, mn, sd, <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>length <span class="ot">&lt;-</span> (original.length <span class="sc">-</span> mn) <span class="sc">/</span> sd</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(length, <span class="at">col =</span> <span class="st">"grey"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># design matrix</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Xmat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span>pop<span class="sc">*</span>length<span class="dv">-1</span><span class="sc">-</span>length)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#print(Xmat[1:21,], dig = 2)        # have a look if you want</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)               <span class="co"># load MASS</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>?mvrnorm                <span class="co"># check syntax</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># values for five hyperparameters</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>intercept.mean <span class="ot">&lt;-</span> <span class="dv">230</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>intercept.sd <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>slope.mean <span class="ot">&lt;-</span> <span class="dv">60</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>slope.sd <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>intercept.slope.covariance <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># set up mu vector and var-covar matrix</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>mu.vector <span class="ot">&lt;-</span> <span class="fu">c</span>(intercept.mean, slope.mean)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>var.cova.matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(intercept.sd<span class="sc">^</span><span class="dv">2</span>,intercept.slope.covariance,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>                            intercept.slope.covariance, slope.sd<span class="sc">^</span><span class="dv">2</span>),<span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate and assemble effects</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>effects <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="at">n =</span> n.groups, <span class="at">mu =</span> mu.vector, <span class="at">Sigma =</span> var.cova.matrix)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>effects                 <span class="co"># the intercepts and slopes for each population</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(effects, <span class="dv">2</span>, mean) <span class="co"># average intercept and slope among populations</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(effects) <span class="co"># var-covar matrix for our simulated data</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>intercept.effects <span class="ot">&lt;-</span> effects[,<span class="dv">1</span>]</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>slope.effects <span class="ot">&lt;-</span> effects[,<span class="dv">2</span>]</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>all.effects <span class="ot">&lt;-</span> <span class="fu">c</span>(intercept.effects, slope.effects)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate values for response variable</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>lin.pred <span class="ot">&lt;-</span> Xmat[,] <span class="sc">%*%</span> all.effects <span class="co"># value of lin.predictor</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">30</span>)  <span class="co"># residuals </span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>mass <span class="ot">&lt;-</span> lin.pred <span class="sc">+</span> eps          <span class="co"># response = lin.pred + residual</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co"># have a look at the simulated data</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(mass, <span class="at">col =</span> <span class="st">"grey"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>snake.df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(mass, length, pop)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> snake.df) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> length, <span class="at">y =</span> mass)) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> pop, <span class="at">ncol =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="classical-analysis-in-r-2" class="level3">
+<h3 class="anchored" data-anchor-id="classical-analysis-in-r-2">8.5.3 Classical analysis in R</h3>
+<p>By default, the model we fit in R using the function <span class="math inline">\({\tt lmer()}\)</span> specifies correlation between slopes and intercepts.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'lme4'</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>lme.fit3 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(mass <span class="sc">~</span> length <span class="sc">+</span> (length <span class="sc">|</span> pop))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>lme.fit3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="bayesian-analysis-with-bugs-2" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-analysis-with-bugs-2">8.5.4 Bayesian analysis with BUGS</h3>
+<p>We will conduct the analysis in NIMBLE using one approach to specifying a random-coefficients model with correlation. This approach is useful for one random-effects variable.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define model</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the model</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>model.lme3 <span class="ot">&lt;-</span> <span class="fu">nimbleCode</span>({</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># priors</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ngroups){</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    alpha[i] <span class="ot">&lt;-</span> B[i,<span class="dv">1</span>]</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    beta[i] <span class="ot">&lt;-</span> B[i,<span class="dv">2</span>]</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    B[i,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="sc">~</span> <span class="fu">dmnorm</span>(B.hat[i,], <span class="at">cov =</span> Sigma.B[,])</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    B.hat[i,<span class="dv">1</span>] <span class="ot">&lt;-</span> mu.int</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    B.hat[i,<span class="dv">2</span>] <span class="ot">&lt;-</span> mu.slope</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  mu.int <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">30</span>)        <span class="co"># hyperpriors for random intercepts</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  mu.slope <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">30</span>)      <span class="co"># hyperpriors for random slopes</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  Sigma.B[<span class="dv">1</span>,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">pow</span>(sigma.int,<span class="dv">2</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  sigma.int <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">100</span>)     <span class="co"># SD of intercepts</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  Sigma.B[<span class="dv">2</span>,<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">pow</span>(sigma.slope,<span class="dv">2</span>)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  sigma.slope <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">100</span>)       <span class="co"># SD of slopes</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  Sigma.B[<span class="dv">1</span>,<span class="dv">2</span>] <span class="ot">&lt;-</span> rho<span class="sc">*</span>sigma.int<span class="sc">*</span>sigma.slope</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  Sigma.B[<span class="dv">2</span>,<span class="dv">1</span>] <span class="ot">&lt;-</span> Sigma.B[<span class="dv">1</span>,<span class="dv">2</span>]</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  rho <span class="sc">~</span> <span class="fu">dunif</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  covariance <span class="ot">&lt;-</span> Sigma.B[<span class="dv">1</span>,<span class="dv">2</span>]</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  sigma <span class="sc">~</span> <span class="fu">dunif</span>(<span class="dv">0</span>, <span class="dv">100</span>)         <span class="co"># residual standard deviation</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># likelihood</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    mass[i] <span class="sc">~</span> <span class="fu">dnorm</span>(mu[i], <span class="at">sd =</span> sigma)      <span class="co"># the 'residual' random variable</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    mu[i] <span class="ot">&lt;-</span> alpha[pop[i]] <span class="sc">+</span> beta[pop[i]]<span class="sc">*</span> length[i]  <span class="co"># expectation</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="co"># data and constants</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>my.data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">mass =</span> <span class="fu">as.numeric</span>(mass), <span class="at">pop =</span> <span class="fu">as.numeric</span>(pop), <span class="at">length =</span> length)</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>my.consts <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">ngroups =</span> <span class="fu">max</span>(<span class="fu">as.numeric</span>(pop)), <span class="at">n =</span> n)</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="co"># initial values</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>my.inits <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">list</span>(<span class="at">mu.int =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="at">sigma.int =</span> <span class="fu">rlnorm</span>(<span class="dv">1</span>),</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>                            <span class="at">mu.slope =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="at">sigma.slope =</span> <span class="fu">rlnorm</span>(<span class="dv">1</span>),</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>                            <span class="at">rho =</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">sigma =</span> <span class="fu">rlnorm</span>(<span class="dv">1</span>))</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="co"># parameters to estimate</span></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>my.params <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'alpha'</span>, <span class="st">'beta'</span>, <span class="st">'mu.int'</span>, <span class="st">'sigma.int'</span>, <span class="st">'mu.slope'</span>,</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>               <span class="st">'sigma.slope'</span>, <span class="st">'rho'</span>, <span class="st">'covariance'</span>, <span class="st">'sigma'</span>)</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="co"># MCMC settings</span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>ni <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>nt <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>nc <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="co"># start Gibbs sampler</span></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>out3 <span class="ot">&lt;-</span> <span class="fu">nimbleMCMC</span>(<span class="at">code =</span> model.lme3,</span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> my.data,</span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>                   <span class="at">constants =</span> my.consts,</span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>                   <span class="at">inits =</span> my.inits,</span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>                   <span class="at">monitors =</span> my.params,</span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>                   <span class="at">thin =</span> nt, <span class="at">niter =</span> ni, <span class="at">nburnin =</span> nb, <span class="at">nchains =</span> nc,</span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dimensions =</span> <span class="fu">list</span>(<span class="at">B.hat =</span> <span class="fu">c</span>(n.groups, <span class="dv">2</span>), <span class="at">Sigma.B =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>)))</span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>(outSum3 <span class="ot">&lt;-</span> <span class="fu">MCMCsummary</span>(out3, <span class="at">round =</span> <span class="dv">2</span>)) <span class="co"># Bayesian output</span></span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>lme.fit3                                          <span class="co"># classical output</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We see that the estimates from the two methods are fairly close to each other, and to the input values set in the data simulation. The benefit we get by using NIMBLE over R is that we get an exact result rather than an asymptotic approximation. The trade-off is that it takes longer to reach convergence. As we move to more complex models, that time will increase further.</p>
+<p>For some simulated data sets, the estimate of the correlation might be negative, even though we designed our data simulation to have a positive correlation. This happens as a consequence of sampling variation and estimation error. We get a sense of this when looking at the poor precision in the estimate of covariance, which is more difficult to estimate than a variance. We don’t get a standard error at all in R.</p>
+<p>&nbsp;</p>
+</section>
+</section>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">8.6 Example</h2>
+<p>&nbsp;</p>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">8.7 Exercises</h2>
+<p>&nbsp;</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">8.8 References</h2>
+<p>Kéry M (2010) Introduction to WinBUGS for ecologists. Academic Press, London, UK.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
